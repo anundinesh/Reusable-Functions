@@ -1,0 +1,26 @@
+import json
+import boto3
+
+def lambda_handler(event, context):
+    # Sample JSON data (array of objects)
+    data = [
+        {"name": "John Doe", "age": 30, "email": "john.doe@example.com"},
+        {"name": "Jane Smith", "age": 25, "email": "jane.smith@example.com"},
+        {"name": "Bob Johnson", "age": 40, "email": "bob.johnson@example.com"}
+    ]
+
+    # Convert JSON data to a JSON-formatted string
+    json_string = json.dumps(data, indent=4)  # indent=4 for pretty formatting (optional)
+
+    # S3 Bucket details
+    bucket_name = "your-s3-bucket-name"
+    s3_key = "path/to/your/s3/file/output.json"
+
+    # Upload the JSON string to S3
+    s3_client = boto3.client("s3")
+    s3_client.put_object(Bucket=bucket_name, Key=s3_key, Body=json_string)
+
+    return {
+        "statusCode": 200,
+        "body": "JSON data has been uploaded to S3."
+    }
